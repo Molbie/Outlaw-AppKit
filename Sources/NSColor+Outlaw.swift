@@ -6,7 +6,7 @@
 //  Copyright © 2016 Molbie LLC. All rights reserved.
 //
 
-#if os(OSX)
+#if os(macOS)
 import AppKit
 import Outlaw
 import OutlawCoreGraphics
