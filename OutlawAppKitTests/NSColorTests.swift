@@ -15,14 +15,19 @@ import OutlawCoreGraphics
 
 class NSColorTests: XCTestCase {
     func testExtractableValue() {
-        let rawData: [String: CGFloat] = ["red": 0.1, "green": 0.2, "blue": 0.3, "alpha": 0.4]
+        typealias keys = NSColor.ExtractableKeys
+        
+        let rawData: [String: CGFloat] = [keys.red: 0.1,
+                                          keys.green: 0.2,
+                                          keys.blue: 0.3,
+                                          keys.alpha: 0.4]
         let data: [String: [String: CGFloat]] = ["color": rawData]
         let color: NSColor = try! data.value(for: "color")
         
-        XCTAssertEqual(color.redComponent, rawData["red"])
-        XCTAssertEqual(color.greenComponent, rawData["green"])
-        XCTAssertEqual(color.blueComponent, rawData["blue"])
-        XCTAssertEqual(color.alphaComponent, rawData["alpha"])
+        XCTAssertEqual(color.redComponent, rawData[keys.red])
+        XCTAssertEqual(color.greenComponent, rawData[keys.green])
+        XCTAssertEqual(color.blueComponent, rawData[keys.blue])
+        XCTAssertEqual(color.alphaComponent, rawData[keys.alpha])
     }
     
     func testIndexExtractableValue() {
@@ -53,13 +58,15 @@ class NSColorTests: XCTestCase {
     }
     
     func testSerializable() {
+        typealias keys = NSColor.ExtractableKeys
+        
         let color = NSColor(deviceRed: 0.1, green: 0.2, blue: 0.3, alpha: 0.4)
         let data: [String: CGFloat] = color.serialized()
         
-        XCTAssertEqual(data["red"], color.redComponent)
-        XCTAssertEqual(data["green"], color.greenComponent)
-        XCTAssertEqual(data["blue"], color.blueComponent)
-        XCTAssertEqual(data["alpha"], color.alphaComponent)
+        XCTAssertEqual(data[keys.red], color.redComponent)
+        XCTAssertEqual(data[keys.green], color.greenComponent)
+        XCTAssertEqual(data[keys.blue], color.blueComponent)
+        XCTAssertEqual(data[keys.alpha], color.alphaComponent)
     }
 }
 #endif

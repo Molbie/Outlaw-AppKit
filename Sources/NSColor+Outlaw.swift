@@ -12,13 +12,24 @@ import Outlaw
 import OutlawCoreGraphics
 
 
+public extension NSColor {
+    public struct ExtractableKeys {
+        public static let red = "red"
+        public static let green = "green"
+        public static let blue = "blue"
+        public static let alpha = "alpha"
+    }
+}
+
 extension NSColor: Value {
     public static func value(from object: Any) throws -> NSColor {
         if let data = object as? Extractable {
-            let red: CGFloat = try data.value(for: "red")
-            let green: CGFloat = try data.value(for: "green")
-            let blue: CGFloat = try data.value(for: "blue")
-            let alpha: CGFloat? = data.value(for: "alpha")
+            typealias keys = NSColor.ExtractableKeys
+            
+            let red: CGFloat = try data.value(for: keys.red)
+            let green: CGFloat = try data.value(for: keys.green)
+            let blue: CGFloat = try data.value(for: keys.blue)
+            let alpha: CGFloat? = data.value(for: keys.alpha)
             
             return NSColor(deviceRed: red, green: green, blue: blue, alpha: alpha ?? 1)
         }
@@ -39,11 +50,13 @@ extension NSColor: Value {
 
 extension NSColor: Serializable {
     public func serialized() -> [String: CGFloat] {
+        typealias keys = NSColor.ExtractableKeys
+        
         var result = [String: CGFloat]()
-        result["red"] = self.redComponent
-        result["green"] = self.greenComponent
-        result["blue"] = self.blueComponent
-        result["alpha"] = self.alphaComponent
+        result[keys.red] = self.redComponent
+        result[keys.green] = self.greenComponent
+        result[keys.blue] = self.blueComponent
+        result[keys.alpha] = self.alphaComponent
         
         return result
     }
