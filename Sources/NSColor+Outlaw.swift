@@ -19,6 +19,12 @@ public extension NSColor {
         public static let blue = "blue"
         public static let alpha = "alpha"
     }
+    public struct ExtractableIndexes {
+        public static let red: Int = 0
+        public static let green: Int = 1
+        public static let blue: Int = 2
+        public static let alpha: Int = 3
+    }
 }
 
 extension NSColor: Value {
@@ -34,10 +40,12 @@ extension NSColor: Value {
             return NSColor(deviceRed: red, green: green, blue: blue, alpha: alpha ?? 1)
         }
         else if let data = object as? IndexExtractable {
-            let red: CGFloat = try data.value(for: 0)
-            let green: CGFloat = try data.value(for: 1)
-            let blue: CGFloat = try data.value(for: 2)
-            let alpha: CGFloat? = data.value(for: 3)
+            typealias indexes = NSColor.ExtractableIndexes
+            
+            let red: CGFloat = try data.value(for: indexes.red)
+            let green: CGFloat = try data.value(for: indexes.green)
+            let blue: CGFloat = try data.value(for: indexes.blue)
+            let alpha: CGFloat? = data.value(for: indexes.alpha)
             
             return NSColor(deviceRed: red, green: green, blue: blue, alpha: alpha ?? 1)
         }

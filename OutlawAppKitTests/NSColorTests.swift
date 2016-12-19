@@ -31,14 +31,21 @@ class NSColorTests: XCTestCase {
     }
     
     func testIndexExtractableValue() {
-        let rawData: [CGFloat] = [0.1, 0.2, 0.3, 0.4]
+        typealias indexes = NSColor.ExtractableIndexes
+        
+        var rawData = [CGFloat](repeating: 0, count: 4)
+        rawData[indexes.red] = 0.1
+        rawData[indexes.green] = 0.2
+        rawData[indexes.blue] = 0.3
+        rawData[indexes.alpha] = 0.4
+        
         let data: [[CGFloat]] = [rawData]
         let color: NSColor = try! data.value(for: 0)
         
-        XCTAssertEqual(color.redComponent, rawData[0])
-        XCTAssertEqual(color.greenComponent, rawData[1])
-        XCTAssertEqual(color.blueComponent, rawData[2])
-        XCTAssertEqual(color.alphaComponent, rawData[3])
+        XCTAssertEqual(color.redComponent, rawData[indexes.red])
+        XCTAssertEqual(color.greenComponent, rawData[indexes.green])
+        XCTAssertEqual(color.blueComponent, rawData[indexes.blue])
+        XCTAssertEqual(color.alphaComponent, rawData[indexes.alpha])
     }
     
     func testInvalidValue() {
