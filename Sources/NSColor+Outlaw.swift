@@ -54,13 +54,51 @@ extension NSColor: Value {
     }
 }
 
+internal extension NSColor {
+    internal func rgbColor() -> NSColor? {
+        guard colorSpace == .genericRGB || colorSpace == .deviceRGB else {
+            return self.usingColorSpace(.genericRGB)
+        }
+        
+        return self
+    }
+}
+
 extension NSColor: Serializable {
     public func serialized() -> [String: CGFloat] {
+        guard let color = rgbColor() else { return [:] }
+        
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        var alpha: CGFloat = 1
+        color.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+        
         var result = [String: CGFloat]()
-        result[keys.red] = self.redComponent
-        result[keys.green] = self.greenComponent
-        result[keys.blue] = self.blueComponent
-        result[keys.alpha] = self.alphaComponent
+        result[keys.red] = red
+        result[keys.green] = green
+        result[keys.blue] = blue
+        result[keys.alpha] = alpha
+        
+        return result
+    }
+}
+
+extension NSColor: IndexSerializable {
+    public func serializedIndexes() -> [CGFloat] {
+        guard let color = rgbColor() else { return [] }
+        
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        var alpha: CGFloat = 1
+        color.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+        
+        var result = [CGFloat](repeating: 0, count: 4)
+        result[indexes.red] = red
+        result[indexes.green] = green
+        result[indexes.blue] = blue
+        result[indexes.alpha] = alpha
         
         return result
     }

@@ -65,12 +65,40 @@ class NSColorTests: XCTestCase {
     
     func testSerializable() {
         let color = NSColor(deviceRed: 0.1, green: 0.2, blue: 0.3, alpha: 0.4)
-        let data: [String: CGFloat] = color.serialized()
+        let data = color.serialized()
         
         XCTAssertEqual(data[keys.red], color.redComponent)
         XCTAssertEqual(data[keys.green], color.greenComponent)
         XCTAssertEqual(data[keys.blue], color.blueComponent)
         XCTAssertEqual(data[keys.alpha], color.alphaComponent)
+        
+        let white = NSColor.white
+        let data2 = white.serialized()
+        let rgbwhite = white.rgbColor()
+        
+        XCTAssertEqual(data2[keys.red], rgbwhite?.redComponent)
+        XCTAssertEqual(data2[keys.green], rgbwhite?.greenComponent)
+        XCTAssertEqual(data2[keys.blue], rgbwhite?.blueComponent)
+        XCTAssertEqual(data2[keys.alpha], rgbwhite?.alphaComponent)
+    }
+    
+    func testIndexSerializable() {
+        let color = NSColor(deviceRed: 0.1, green: 0.2, blue: 0.3, alpha: 0.4)
+        let data = color.serializedIndexes()
+        
+        XCTAssertEqual(data[indexes.red], color.redComponent)
+        XCTAssertEqual(data[indexes.green], color.greenComponent)
+        XCTAssertEqual(data[indexes.blue], color.blueComponent)
+        XCTAssertEqual(data[indexes.alpha], color.alphaComponent)
+        
+        let white = NSColor.white
+        let data2 = white.serializedIndexes()
+        let rgbwhite = white.rgbColor()
+        
+        XCTAssertEqual(data2[indexes.red], rgbwhite?.redComponent)
+        XCTAssertEqual(data2[indexes.green], rgbwhite?.greenComponent)
+        XCTAssertEqual(data2[indexes.blue], rgbwhite?.blueComponent)
+        XCTAssertEqual(data2[indexes.alpha], rgbwhite?.alphaComponent)
     }
 }
 #endif
