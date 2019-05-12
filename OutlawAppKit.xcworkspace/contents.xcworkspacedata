@@ -2,12 +2,16 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:OutlawAppKit.xcodeproj">
+      location = "group:Xcode/OutlawAppKit.xcodeproj">
    </FileRef>
-   <FileRef
-      location = "group:Carthage/Checkouts/outlaw/Outlaw.xcodeproj">
-   </FileRef>
-   <FileRef
-      location = "group:Carthage/Checkouts/outlaw-coregraphics/OutlawCoreGraphics.xcodeproj">
-   </FileRef>
+   <Group
+      location = "container:"
+      name = "Dependencies">
+      <FileRef
+         location = "group:Carthage/Checkouts/outlaw/Xcode/Outlaw.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:Carthage/Checkouts/outlaw-coregraphics/Xcode/OutlawCoreGraphics.xcodeproj">
+      </FileRef>
+   </Group>
 </Workspace>

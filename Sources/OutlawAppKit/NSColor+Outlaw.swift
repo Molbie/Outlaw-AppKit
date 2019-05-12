@@ -13,20 +13,20 @@ import OutlawCoreGraphics
 
 
 public extension NSColor {
-    public struct ExtractableKeys {
+    struct ExtractableKeys {
         public static let red = "red"
         public static let green = "green"
         public static let blue = "blue"
         public static let alpha = "alpha"
     }
-    public struct ExtractableIndexes {
+    struct ExtractableIndexes {
         public static let red: Int = 0
         public static let green: Int = 1
         public static let blue: Int = 2
         public static let alpha: Int = 3
     }
-    fileprivate typealias keys = NSColor.ExtractableKeys
-    fileprivate typealias indexes = NSColor.ExtractableIndexes
+    private typealias keys = NSColor.ExtractableKeys
+    private typealias indexes = NSColor.ExtractableIndexes
 }
 
 extension NSColor: Value {
@@ -35,7 +35,7 @@ extension NSColor: Value {
             let red: CGFloat = try data.value(for: keys.red)
             let green: CGFloat = try data.value(for: keys.green)
             let blue: CGFloat = try data.value(for: keys.blue)
-            let alpha: CGFloat? = data.value(for: keys.alpha)
+            let alpha: CGFloat? = data.optional(for: keys.alpha)
             
             return NSColor(deviceRed: red, green: green, blue: blue, alpha: alpha ?? 1)
         }
@@ -43,19 +43,19 @@ extension NSColor: Value {
             let red: CGFloat = try data.value(for: indexes.red)
             let green: CGFloat = try data.value(for: indexes.green)
             let blue: CGFloat = try data.value(for: indexes.blue)
-            let alpha: CGFloat? = data.value(for: indexes.alpha)
+            let alpha: CGFloat? = data.optional(for: indexes.alpha)
             
             return NSColor(deviceRed: red, green: green, blue: blue, alpha: alpha ?? 1)
         }
         else {
             let expectedType = "Extractable or IndexExtractable"
-            throw OutlawError.typeMismatch(expected: expectedType, actual: type(of: object))
+            throw OutlawError.typeMismatch(expected: expectedType, actual: Swift.type(of: object))
         }
     }
 }
 
 internal extension NSColor {
-    internal func rgbColor() -> NSColor? {
+    func rgbColor() -> NSColor? {
         guard colorSpace == .genericRGB || colorSpace == .deviceRGB else {
             return self.usingColorSpace(.genericRGB)
         }
